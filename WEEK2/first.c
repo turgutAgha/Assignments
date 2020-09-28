@@ -27,4 +27,5 @@ void swap1(int val1, int val2){
 	//printing numbers after swapping
 	printf("\nAfter swapping: \n");
 	printf("Value1: %d\nValue2: %d\n", val1, val2);
+
 }
