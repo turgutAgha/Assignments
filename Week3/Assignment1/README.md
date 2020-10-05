@@ -1,4 +1,4 @@
-## Week2
+## Week3
 ## Assignment 1
 
 A c program that takes two integer arrays and merges them into one 2D array. It then prints the contents of 2D array using function called print2DArr. Then it swaps those two arrays using a new function called swapArrays and again prints 2D array.
