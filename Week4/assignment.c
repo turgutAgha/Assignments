@@ -30,30 +30,25 @@ int main(){
 
 
 int solveMaze(char **maze, const int HT, const int WD, int y, int x){
-    
-    // solve recursively
-    // however you might want to mark wrong paths with some other character
-    // your functions should be able to solve other such mazes
-    // pay attention to the bounds of the arrays
-    // make sure you don't enter an infinite recursion
-    if(x < 0 || y < 0 || x >= HT || y >= WD)
+    if(x < 0 || y < 0 || x >= HT || y >= WD)		// checks whether point is out of bounds or not
         return 0;
-    if(maze[x][y] == '#' || maze[x][y] == '.')
+    if(maze[x][y] == '#' || maze[x][y] == '.')		// checks if point is visited or blocked
         return 0;
-    if(maze[x][y] == '*')
+    if(maze[x][y] == '*')				// checks if the destination is reached
         return 1;
 
-    maze[x][y] = '.';
-    if(solveMaze(maze, HT, WD, y, x+1))
+    maze[x][y] = '.';					
+	
+    if(solveMaze(maze, HT, WD, y, x+1))			// to north
         return 1;
-    if(solveMaze(maze, HT, WD, y, x-1))
+    if(solveMaze(maze, HT, WD, y, x-1))			// to south
         return 1;
-    if(solveMaze(maze, HT, WD, y+1, x))
+    if(solveMaze(maze, HT, WD, y+1, x))			// to east
         return 1;
-    if(solveMaze(maze, HT, WD, y-1, x))
+    if(solveMaze(maze, HT, WD, y-1, x))			// to west
         return 1;
         
-    maze[x][y] = ' ';
+    maze[x][y] = ' ';					// if none of the statements is true the point is not visited
     return 0;
 }
 
