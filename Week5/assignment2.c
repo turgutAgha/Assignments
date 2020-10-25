@@ -1,20 +1,21 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <limits.h>
 
 #define STACK_CAPACITY 2
 
 struct Stack {
 	int top;
 	unsigned capacity;
-	char* array;
+	int* array;
 };
 
 struct Stack* createStack(){
 	struct Stack* stack = (struct Stack*)malloc(sizeof(struct Stack));
 	stack->capacity = STACK_CAPACITY;
 	stack->top = -1;
-	stack->array = (char*)malloc(stack->capacity * sizeof(char));
+	stack->array = (int*)malloc(stack->capacity * sizeof(int));
 	return stack;
 
 }
@@ -34,15 +35,15 @@ int isEmpty(struct Stack* stack){
 }
 
 void *resize(struct Stack* stack){
-	char * temp;
-	temp = (char*)malloc(stack->capacity * sizeof(char));
+	int * temp;
+	temp = (int*)malloc(stack->capacity * sizeof(int));
 
 	for(int i = 0; i < stack->capacity; i++){
 		temp[i] = stack->array[i];
 	}
 	
 	stack->capacity *= 2;
-	stack->array = (char*)malloc(stack->capacity * sizeof(char));
+	stack->array = (int*)malloc(stack->capacity * sizeof(int));
 
 	for(int i = 0; i < stack->capacity / 2; i++){
 		stack->array[i] = temp[i];
@@ -51,22 +52,22 @@ void *resize(struct Stack* stack){
 	//printf("Stack is resized, new length: %d\n", stack->capacity);
 }
 
-void push(struct Stack* stack, char item){
+void push(struct Stack* stack, int item){
 	if(isFull(stack))
 		resize(stack);
 	stack->array[++stack->top] = item;
-	//printf("%c pushed to stack\n", stack->array[stack->top]);
+	//printf("%d pushed to stack\n", stack->array[stack->top]);
 }
 
-char pop(struct Stack* stack){
+int pop(struct Stack* stack){
 	if(isEmpty(stack))
-		return '0';
+		return INT_MIN;
 	return stack->array[stack->top--];
 }
 
-char peek(struct Stack* stack){
+int peek(struct Stack* stack){
 	if(isEmpty(stack))
-		return '0';
+		return INT_MIN;
 	return stack->array[stack->top];
 }
 
