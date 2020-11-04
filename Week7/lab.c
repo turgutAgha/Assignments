@@ -9,63 +9,66 @@ typedef struct queue{
 } queue_t;
 
 void append(queue_t ** head, char * name){
-        queue_t * nextNode = *head;
-
-        while(nextNode->next != NULL){
-                nextNode = nextNode->next;
+        queue_t * lastNode = *head;
+        while(lastNode->next != NULL){
+                lastNode = lastNode->next;
         }
-        nextNode->next = (queue_t *) malloc(sizeof(queue_t*));
-        strcpy(nextNode->next->name, name);
-        nextNode->next->next = NULL;
+        queue_t * nextNode = (queue_t *) malloc(sizeof(queue_t));
+        strcpy(nextNode->name, name);
+        nextNode->next = NULL;
+        lastNode->next = nextNode;
 }
 
 void admit(queue_t **head){
-        queue_t * next_node = NULL;
-
-        if(*head == NULL)
+        if(*head == NULL){
+                printf("There is no customer\n");
                 return;
+        }
 
-        next_node = (*head)->next;
-
+        queue_t *next_node = (*head)->next;
         free(*head);
         *head = next_node;
 }
 
 void luckyCustomer(queue_t ** head, char *name){
+        if(*head == NULL){
+                printf("Customer doesn't exist\n");
+                return;
+        }
 
         queue_t * curr = *head;
         queue_t * temp = NULL;
-
-        if(strcmp((*head)->name, name) == 0){
+        
+        if(curr != NULL && strcmp(curr->name, name) == 0){
+                if(curr->next == NULL)
+                        return;
                 admit(head);
         }
         else{
-                while(strcmp(curr->next->name, name) != 0){
-                        if(curr == NULL)
-                                return;
-                                
+                while(curr->next != NULL && strcmp(curr->next->name, name) != 0){         
                         curr = curr->next;
                 }
-
                 temp = curr->next;
-                if(temp == NULL)
-                        return;
-                curr->next = temp->next;
-                free(temp);
-        }
         
+                if(temp == NULL){
+                        printf("Customer doesn't exist\n");
+                        return;
+                }
+                curr->next = temp->next;
+        }     
         append(head, name);
-
+        free(temp);
 }
 
 void print_queue(queue_t *head){
         printf("Queue: ");
-        while(head->next != NULL){
-                printf("%s, ", head->name);
+        while(head != NULL){
+                printf("%s", head->name);
                 head = head->next;
+                if(head != NULL)
+                        printf(", ");
         }
-        if(head != NULL)
-                printf("%s\n", head->name);
+        printf("\n");
 }
 
 int main(){
@@ -78,14 +81,12 @@ int main(){
         append(&head, "Kamran");
         append(&head, "Eljan");
 
-
-
         char input[256];
         bool quit = 0;
         while(!quit){
                 print_queue(head);
                 printf("Enter a command: ");
-                scanf("%s", &input);
+                scanf("%s", input);
                 printf("\n");
                 if(*input == 'q'){
                         quit = 1;
@@ -97,4 +98,16 @@ int main(){
                         luckyCustomer(&head, input);
                 }
         }
+
+        queue_t *curr = head;
+        queue_t *temp = NULL;
+        while(curr != NULL){
+                temp = curr->next;
+                free(curr);
+                curr = temp;
+        }
+        free(curr);
+        free(head);
+        head = NULL;
+        return 0;
 }
