@@ -110,8 +110,8 @@ int main(){
             printf("No swap candidates found. Try again:\n");
         scanf("%s", input);
     }
-
-
+    free(head);
+    
     return 0;
 }
 
